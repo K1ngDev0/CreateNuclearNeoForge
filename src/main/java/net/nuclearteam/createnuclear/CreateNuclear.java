@@ -30,6 +30,7 @@ import net.nuclearteam.createnuclear.foundation.advancement.CNAdvancement;
 import net.nuclearteam.createnuclear.foundation.advancement.CNTriggers;
 import net.nuclearteam.createnuclear.infrastructure.config.CNConfigs;
 import net.nuclearteam.createnuclear.infrastructure.data.CreateNuclearDatagen;
+import net.nuclearteam.createnuclear.foundation.events.ItemRadiationEvents;
 import org.slf4j.Logger;
 
 import com.simibubi.create.api.registrate.CreateRegistrateRegistrationCallback;
@@ -90,6 +91,7 @@ public class CreateNuclear {
         modEventBus.addListener(CreateNuclear::onRegister);
         modEventBus.addListener(EventPriority.LOWEST, CreateNuclearDatagen::gatherData);
         forgeEventBus.addListener(CNFluids::handleFluidEffect);
+        forgeEventBus.addListener(ItemRadiationEvents::onLevelTick);
 
         modEventBus.addListener(EventPriority.HIGHEST, CreateNuclearDatagen::gatherDataHighPriority);
 

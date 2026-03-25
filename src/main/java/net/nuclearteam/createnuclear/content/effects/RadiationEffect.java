@@ -3,15 +3,15 @@ package net.nuclearteam.createnuclear.content.effects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.nuclearteam.createnuclear.CNEffects;
-import net.nuclearteam.createnuclear.CNPotions;
 import net.nuclearteam.createnuclear.CNTags;
 import net.nuclearteam.createnuclear.CreateNuclear;
 import net.nuclearteam.createnuclear.content.equipment.armor.AntiRadiationArmorItem;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public class RadiationEffect extends MobEffect {
 
@@ -38,7 +38,7 @@ public class RadiationEffect extends MobEffect {
     /**
      * Applies the radiation effect to the entity.
      * - Does nothing if the entity is immune via tag.
-     * - Skips damage if the entity wears any anti-radiation armor.
+     * - Skips damage only when the full anti-radiation suit is worn.
      * - Otherwise, applies magic damage based on the amplifier.
      *
      * @param livingEntity The affected living entity.
@@ -52,25 +52,27 @@ public class RadiationEffect extends MobEffect {
             return true;
         }
 
-        // Check if the entity is wearing any anti-radiation armor
-        boolean isWearingAntiRadiationArmor = false;
-        for (ItemStack armor : livingEntity.getArmorSlots()) {
-            if (AntiRadiationArmorItem.Armor.isArmored(armor)) {
-                isWearingAntiRadiationArmor = true;
-                break;
-            }
-        }
-
-        // If protected by armor, do not apply damage
-        if (isWearingAntiRadiationArmor) {
+        // Full suit is required to block radiation poison damage.
+        if (isWearingFullAntiRadiationSuit(livingEntity)) {
             return false;
-
         }
 
         // Apply radiation damage (magic type), scaled by amplifier
         int damage = 1 << amplifier;
         livingEntity.hurt(livingEntity.damageSources().magic(), damage);
         return true;
+    }
+
+    private static boolean isWearingFullAntiRadiationSuit(LivingEntity livingEntity) {
+        ItemStack head = livingEntity.getItemBySlot(EquipmentSlot.HEAD);
+        ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+        ItemStack legs = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
+        ItemStack feet = livingEntity.getItemBySlot(EquipmentSlot.FEET);
+
+        return AntiRadiationArmorItem.Armor.isArmored(head)
+            && AntiRadiationArmorItem.Armor.isArmored(chest)
+            && AntiRadiationArmorItem.Armor.isArmored(legs)
+            && AntiRadiationArmorItem.Armor.isArmored(feet);
     }
 
     @Override

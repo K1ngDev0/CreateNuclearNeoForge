@@ -69,7 +69,12 @@ public class CNItems {
 
         RAW_URANIUM = CreateNuclear.REGISTRATE
             .item("raw_uranium", Item::new)
-            .tag(CNTags.forgeItemTag("raw_ores"), CNTags.forgeItemTag("raw_materials"), CNTags.forgeItemTag("raw_materials/uranium"))
+            .tag(
+                CNTags.forgeItemTag("raw_ores"),
+                CNTags.forgeItemTag("raw_materials"),
+                CNTags.forgeItemTag("raw_materials/uranium"),
+                CNItemTags.RADIOACTIVE_ITEMS.tag
+            )
                 .recipe((c, p) -> ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
                         .unlockedBy("has_storage_blocks_raw_uranium", RegistrateRecipeProvider.has(CNTags.forgeItemTag("storage_blocks/raw_uranium")))
                         .requires(CNTags.forgeItemTag("storage_blocks/raw_uranium"))
@@ -79,7 +84,7 @@ public class CNItems {
 
         URANIUM_POWDER = CreateNuclear.REGISTRATE
             .item("uranium_powder", Item::new)
-            .tag(CNTags.forgeItemTag("dusts"), CNTags.forgeItemTag("dusts/uranium"))
+            .tag(CNTags.forgeItemTag("dusts"), CNTags.forgeItemTag("dusts/uranium"), CNItemTags.RADIOACTIVE_ITEMS.tag)
             .register(),
 
         STEEL_INGOT = CreateNuclear.REGISTRATE
@@ -124,7 +129,7 @@ public class CNItems {
 
         URANIUM_ROD = CreateNuclear.REGISTRATE
             .item("uranium_rod", Item::new)
-            .tag(CNTags.forgeItemTag("rods"), CNItemTags.FUEL.tag)
+            .tag(CNTags.forgeItemTag("rods"), CNItemTags.FUEL.tag, CNItemTags.RADIOACTIVE_ITEMS.tag)
             .register(),
 
         LEAD_NUGGET = CreateNuclear.REGISTRATE

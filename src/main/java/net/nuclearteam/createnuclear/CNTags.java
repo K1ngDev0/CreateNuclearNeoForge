@@ -125,6 +125,7 @@ public class CNTags {
         CLOTH,
         FUEL,
         COOLER,
+        RADIOACTIVE_ITEMS,
         URANIUM_ORES,
         LEAD_ORES,
         ANTI_RADIATION_HELMET_DYE,
